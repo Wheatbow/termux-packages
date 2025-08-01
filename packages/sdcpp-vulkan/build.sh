@@ -7,9 +7,11 @@ TERMUX_PKG_VERSION=0.0.0-${__GIT_REV}
 TERMUX_PKG_SRCURL=https://github.com/leejet/stable-diffusion.cpp/archive/refs/tags/master-${__GIT_REV}.tar.gz
 TERMUX_PKG_SHA256="SKIP_CHECKSUM"
 TERMUX_PKG_BUILD_DEPENDS="opencl-headers, vulkan-headers, ocl-icd, shaderc"
+TERMUX_PKG_CONFLICTS="sdcpp"
+TERMUX_PKG_REPLACES="sdcpp"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DSD_OPENCL=OFF \
--DSD_VULKAN=OFF \
+-DSD_VULKAN=ON \
 -DGGML_OPENMP=OFF
 "
 termux_step_post_get_source() {
