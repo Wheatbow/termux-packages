@@ -2,10 +2,10 @@ TERMUX_PKG_HOMEPAGE=https://www.kde.org/
 TERMUX_PKG_DESCRIPTION="Framework which lets applications perform actions as a privileged user (KDE)"
 TERMUX_PKG_LICENSE="LGPL-2.1"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="6.15.0"
+TERMUX_PKG_VERSION="6.18.0"
 _KF6_MINOR_VERSION="${TERMUX_PKG_VERSION%.*}"
 TERMUX_PKG_SRCURL="https://download.kde.org/stable/frameworks/${_KF6_MINOR_VERSION}/kauth-${TERMUX_PKG_VERSION}.tar.xz"
-TERMUX_PKG_SHA256=19c7b598a780ba5befd30f25de694536811a46a5622c4a2c28892f2f3ba5a617
+TERMUX_PKG_SHA256=8c6fee69482e7a3dfcf7eacca9cb6a191ec5d1b09e0a539e1f7d5d76d08403e9
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="libc++, qt6-qtbase, kf6-kcoreaddons (>= ${_KF6_MINOR_VERSION})"
 TERMUX_PKG_BUILD_DEPENDS="extra-cmake-modules (>= ${_KF6_MINOR_VERSION}), qt6-qttools"
