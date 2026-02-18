@@ -2,16 +2,15 @@ TERMUX_PKG_HOMEPAGE=https://oplist.org/
 TERMUX_PKG_DESCRIPTION="A file list program that supports multiple storage"
 TERMUX_PKG_LICENSE="AGPL-V3"
 TERMUX_PKG_MAINTAINER="2096779623 <admin@utermux.dev>"
-TERMUX_PKG_VERSION="4.1.2"
-TERMUX_PKG_REVISION=1
-_OPENLIST_WEB_VERSION="4.1.2"
+TERMUX_PKG_VERSION="4.1.10"
+_OPENLIST_WEB_VERSION="4.1.10"
 TERMUX_PKG_SRCURL=(
-	https://github.com/OpenListTeam/OpenList/archive/v${TERMUX_PKG_VERSION}.tar.gz
+	https://github.com/OpenListTeam/OpenList/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
 	https://github.com/OpenListTeam/OpenList-Frontend/releases/download/v${_OPENLIST_WEB_VERSION}/openlist-frontend-dist-v${_OPENLIST_WEB_VERSION}.tar.gz
 )
 TERMUX_PKG_SHA256=(
-	4de94e32f4b05d86654f97cd1551b8cfbbed6b2c38b2ac400fde3e7622013614
-	aa9a5ad478debf98a2744cfd0d494be1bd9e6d55ce57ca71093d5c35052c5f4b
+	0e85b2e9f97c819a79a054c2de1f505b0b0d78e1c8ce6783e12da85ea519840c
+	7df4b3a94eb054963e5eb4addab8d74bdf027c4c02f9a83845ceb7a9eccbc674
 )
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_BUILD_IN_SRC=true
@@ -23,6 +22,7 @@ TERMUX_PKG_UPDATE_TAG_TYPE="latest-release-tag"
 termux_pkg_auto_update() {
 	local latest_tag
 	latest_tag="$(termux_github_api_get_tag "${TERMUX_PKG_SRCURL[0]}" "${TERMUX_PKG_UPDATE_TAG_TYPE}")"
+	latest_tag="${latest_tag#v}"
 	(( ${#latest_tag} )) || {
 		printf '%s\n' \
 		'WARN: Auto update failure!' \
@@ -35,14 +35,20 @@ termux_pkg_auto_update() {
 		return
 	fi
 
+	if [[ "${BUILD_PACKAGES}" == "false" ]]; then
+		echo "INFO: package needs to be updated to ${latest_tag}."
+		return
+	fi
+
 	local tmpdir
 	tmpdir="$(mktemp -d)"
 	curl -sLo "${tmpdir}/openlist-linux-amd64.tar.gz" "https://github.com/OpenListTeam/OpenList/releases/download/v${latest_tag}/openlist-linux-amd64.tar.gz"
 	tar -C "${tmpdir}" -xf "${tmpdir}/openlist-linux-amd64.tar.gz"
 	chmod +x "${tmpdir}/openlist"
-	local latest_web_version="$("${tmpdir}"/openlist version | grep "WebVersion:" | cut -d ' ' -f 2 | sed 's/^v//')"
+	local latest_web_version
+	latest_web_version="$("${tmpdir}"/openlist version | grep "WebVersion:" | cut -d ' ' -f 2 | sed 's/^v//')"
 
-	curl -sLo "${tmpdir}/src" "https://github.com/OpenListTeam/OpenList/archive/v${latest_tag}.tar.gz"
+	curl -sLo "${tmpdir}/src" "https://github.com/OpenListTeam/OpenList/archive/refs/tags/v${latest_tag}.tar.gz"
 	curl -sLo "${tmpdir}/web" "https://github.com/OpenListTeam/OpenList-Frontend/releases/download/v${latest_web_version}/openlist-frontend-dist-v${latest_web_version}.tar.gz"
 	local -a sha=(
 		"$(sha256sum "${tmpdir}/src" | cut -d ' ' -f 1)"
