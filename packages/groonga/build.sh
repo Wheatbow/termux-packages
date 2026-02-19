@@ -2,10 +2,9 @@ TERMUX_PKG_HOMEPAGE=https://github.com/groonga/groonga/
 TERMUX_PKG_DESCRIPTION="An embeddable fulltext search engine"
 TERMUX_PKG_LICENSE="LGPL-2.1"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="15.1.5"
-TERMUX_PKG_REVISION=1
-TERMUX_PKG_SRCURL=https://github.com/groonga/groonga/releases/download/v${TERMUX_PKG_VERSION}/groonga-${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=7513bd4014022152651613598d5670a221087ac201ae46563523b0ce090e9e46
+TERMUX_PKG_VERSION="16.0.0"
+TERMUX_PKG_SRCURL="https://github.com/groonga/groonga/releases/download/v${TERMUX_PKG_VERSION}/groonga-${TERMUX_PKG_VERSION}.tar.gz"
+TERMUX_PKG_SHA256=e8cec40d59c848617912d988c69ca67445c19fd2d8fcb5b6080eded2df89d545
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_FORCE_CMAKE=true
 TERMUX_PKG_DEPENDS="libandroid-execinfo, libarrow-cpp, libc++, liblz4, libstemmer, onigmo, simdjson, xxhash, zlib, zstd"
@@ -21,6 +20,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DGRN_WITH_XXHASH=system
 -DGRN_WITH_ZLIB=system
 -DGRN_WITH_ZSTD=system
+-DGRN_WITH_OPENZL=no
 "
 
 termux_step_pre_configure() {

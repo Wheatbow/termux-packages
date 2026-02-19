@@ -3,12 +3,11 @@ TERMUX_PKG_DESCRIPTION="Terminal multiplexer with TUI window manager and multi-p
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_LICENSE_FILE="LICENSE"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="2025.09.26"
+TERMUX_PKG_VERSION="2026.02.16"
 TERMUX_PKG_SRCURL=https://github.com/directvt/vtm/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=5a0eb1485ad939baddfbdc9046c41d60756a9ced123cd28d32525476da8ae08b
-TERMUX_PKG_DEPENDS="libc++"
+TERMUX_PKG_SHA256=909b1d63dfc539a5c0e8bcf6980d559d657df931b350063b09ffadae3b510c37
+TERMUX_PKG_DEPENDS="freetype, harfbuzz, libc++, lua54"
 TERMUX_PKG_BUILD_DEPENDS="libandroid-spawn"
-TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_AUTO_UPDATE=true
 
 termux_step_pre_configure() {

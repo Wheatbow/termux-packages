@@ -3,11 +3,14 @@ TERMUX_PKG_DESCRIPTION="A cross-platform application and UI framework"
 TERMUX_PKG_LICENSE="GPL-3.0-only"
 TERMUX_PKG_LICENSE_FILE="LICENSES/GPL-3.0-only.txt"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="6.9.2"
+TERMUX_PKG_VERSION="6.10.2"
 TERMUX_PKG_SRCURL="https://download.qt.io/official_releases/qt/${TERMUX_PKG_VERSION%.*}/${TERMUX_PKG_VERSION}/submodules/qtbase-everywhere-src-${TERMUX_PKG_VERSION}.tar.xz"
-TERMUX_PKG_SHA256=44be9c9ecfe04129c4dea0a7e1b36ad476c9cc07c292016ac98e7b41514f2440
-TERMUX_PKG_DEPENDS="brotli, double-conversion, freetype, glib, harfbuzz, libandroid-posix-semaphore, libandroid-shmem, libc++, libdrm, libice, libicu, libjpeg-turbo, libpng, libsm, libsqlite, libuuid, libx11, libxcb, libxi, libxkbcommon, libwayland, opengl, openssl, pcre2, vulkan-loader, xcb-util-cursor, xcb-util-image, xcb-util-keysyms, xcb-util-renderutil, xcb-util-wm, zlib, zstd"
-TERMUX_PKG_BUILD_DEPENDS="binutils-cross, libwayland-protocols, vulkan-headers, vulkan-loader-generic"
+TERMUX_PKG_SHA256=aeb78d29291a2b5fd53cb55950f8f5065b4978c25fb1d77f627d695ab9adf21e
+TERMUX_PKG_DEPENDS="brotli, double-conversion, freetype, glib, harfbuzz, krb5, libandroid-posix-semaphore, libandroid-shmem, libc++, libdrm, libice, libicu, libjpeg-turbo, libpng, libsm, libsqlite, libuuid, libx11, libxcb, libxi, libxkbcommon, libwayland, opengl, openssl, pcre2, vulkan-loader, xcb-util-cursor, xcb-util-image, xcb-util-keysyms, xcb-util-renderutil, xcb-util-wm, zlib, zstd"
+# gtk3 dependency is a run-time dependency only for the gtk platformtheme subpackage
+TERMUX_PKG_BUILD_DEPENDS="binutils-cross, gdk-pixbuf, gtk3, libwayland-protocols, pango, vulkan-headers, vulkan-loader-generic"
+# qt6-qtbase now contains include/qt6/QtWaylandClient/QWaylandClientExtension instead of qt6-qtwayland
+TERMUX_PKG_CONFLICTS="qt6-qtwayland (<< 6.10.0)"
 TERMUX_PKG_HOSTBUILD=true
 TERMUX_PKG_FORCE_CMAKE=true
 TERMUX_PKG_NO_STATICSPLIT=true
@@ -105,7 +108,7 @@ termux_step_host_build() {
 		-exec sed -e "s|^${TERMUX_PREFIX}/opt/qt6/cross|..|g" -i "{}" \;
 
 	while read -r target link; do
-		ln -sv "$target" "$TERMUX_PREFIX/opt/qt6/cross/$link"
+		ln -sfv "$target" "$TERMUX_PREFIX/opt/qt6/cross/$link"
 	done < "$PWD/user_facing_tool_links.txt"
 
 	find ${TERMUX_PREFIX}/opt/qt6/cross -type f -name target_qt.conf \
@@ -133,7 +136,7 @@ termux_step_post_make_install() {
 		-exec cat "{}" \;
 
 	while read -r target link; do
-		ln -sv "$target" "$TERMUX_PREFIX/$link"
+		ln -sfv "$target" "$TERMUX_PREFIX/$link"
 	done < "$PWD/user_facing_tool_links.txt"
 
 	find ${TERMUX_PREFIX}/lib/qt6 -type f -name target_qt.conf \
