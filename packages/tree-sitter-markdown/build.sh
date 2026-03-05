@@ -1,25 +1,33 @@
 TERMUX_PKG_HOMEPAGE=https://github.com/tree-sitter-grammars/tree-sitter-markdown
 TERMUX_PKG_DESCRIPTION="Markdown grammar for tree-sitter"
 TERMUX_PKG_LICENSE="MIT"
-TERMUX_PKG_MAINTAINER="Joshua Kahn @TomJo2000"
-TERMUX_PKG_VERSION="0.5.0"
-TERMUX_PKG_REVISION=4
+TERMUX_PKG_MAINTAINER="Joshua Kahn <tom@termux.dev>"
+TERMUX_PKG_VERSION="0.5.3"
 TERMUX_PKG_SRCURL=https://github.com/tree-sitter-grammars/tree-sitter-markdown/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=14c2c948ccf0e9b606eec39b09286c59dddf28307849f71b7ce2b1d1ef06937e
+TERMUX_PKG_SHA256=df845b1ab7c7c163ec57d7fa17170c92b04be199bddab02523636efec5224ab6
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_TAG_TYPE='newest-tag'
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
+-DCMAKE_INSTALL_LIBDIR=$TERMUX__PREFIX__LIB_SUBDIR
+-DCMAKE_INSTALL_INCLUDEDIR=$TERMUX__PREFIX__INCLUDE_SUBDIR
 -DALL_EXTENSIONS=ON
 "
 
-termux_step_pre_configure() {
-	termux_setup_nodejs
+termux_step_configure() {
 	termux_setup_treesitter
 }
 
-termux_step_post_make_install() {
-	install -d "${TERMUX_PREFIX}"/lib/tree_sitter
-	ln -sf "${TERMUX_PREFIX}"/lib/libtree-sitter-markdown.so "${TERMUX_PREFIX}"/lib/tree_sitter/markdown.so
-	ln -sf "${TERMUX_PREFIX}"/lib/libtree-sitter-markdown-inline.so "${TERMUX_PREFIX}"/lib/tree_sitter/markdown_inline.so
+termux_step_make() {
+	local parser
+	for parser in "markdown" "markdown-inline"; do
+		termux-tree-sitter build -s "tree-sitter-$parser/src"
+	done
+}
+
+termux_step_make_install() {
+	local parser
+	for parser in "markdown" "markdown-inline"; do
+		termux-tree-sitter install -s "tree-sitter-$parser/src"
+	done
 }

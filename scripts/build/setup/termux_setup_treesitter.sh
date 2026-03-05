@@ -2,7 +2,7 @@ termux_setup_treesitter() {
 	local TERMUX_TREE_SITTER_VERSION
 	TERMUX_TREE_SITTER_VERSION="$(. "$TERMUX_SCRIPTDIR/packages/tree-sitter/build.sh"; echo "$TERMUX_PKG_VERSION")"
 	TERMUX_TREE_SITTER_URL="https://github.com/tree-sitter/tree-sitter/releases/download/v${TERMUX_TREE_SITTER_VERSION}/tree-sitter-linux-x64.gz"
-	local TERMUX_TREE_SITTER_SHA256=00ffe4a332a112b6fd7f47d20be61bf76cbf39856fa98c944de51c822d39bdfc
+	local TERMUX_TREE_SITTER_SHA256=8283ddba69253c698f6e987ba0e2f9285e079c8db4d36ebe1394b5bb3a0ebdfd
 
 	local TERMUX_TREE_SITTER_GZNAME="tree-sitter-linux-x64.gz"
 	local TERMUX_TREE_SITTER_URL="https://github.com/tree-sitter/tree-sitter/releases/download/v${TERMUX_TREE_SITTER_VERSION}/${TERMUX_TREE_SITTER_GZNAME}"
@@ -48,6 +48,17 @@ termux_setup_treesitter() {
 		echo "termux_step_setup_treesitter: tree-sitter $TERMUX_TREE_SITTER_VERSION is already installed"
 		echo "$TERMUX_TREE_SITTER_DIR/bin/tree-sitter"
 	fi
+
+	# Default to the latest ABI version, can be overridden per package as necessary.
+	: "${TREE_SITTER_ABI_VERSION:=15}"
+
+	ln -sf "$TERMUX_SCRIPTDIR/packages/tree-sitter/termux-tree-sitter" "${TERMUX_TREE_SITTER_DIR}/bin"
 	export PATH="${TERMUX_TREE_SITTER_DIR}/bin:${PATH}"
+
+	# ABI version to build the parser against.
+	export TREE_SITTER_ABI_VERSION
+	# Needed for pkgconfig files
+	# shellcheck disable=SC2031
+	export TERMUX_PREFIX TERMUX_PKG_VERSION TERMUX_PKG_DESCRIPTION TERMUX_PKG_HOMEPAGE
 
 }

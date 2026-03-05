@@ -2,10 +2,10 @@ TERMUX_PKG_HOMEPAGE=https://www.gnu.org/software/coreutils/
 TERMUX_PKG_DESCRIPTION="Basic file, shell and text manipulation utilities from the GNU project"
 TERMUX_PKG_LICENSE="GPL-3.0"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION=9.7
-TERMUX_PKG_REVISION=3
+TERMUX_PKG_VERSION=9.10
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://mirrors.kernel.org/gnu/coreutils/coreutils-${TERMUX_PKG_VERSION}.tar.xz
-TERMUX_PKG_SHA256=e8bb26ad0293f9b5a1fc43fb42ba970e312c66ce92c1b0b16713d7500db251bf
+TERMUX_PKG_SHA256=16535a9adf0b10037364e2d612aad3d9f4eca3a344949ced74d12faf4bd51d25
 TERMUX_PKG_DEPENDS="libandroid-selinux, libandroid-support, libgmp, libiconv, openssl (>= 1:3.5.0-1)"
 TERMUX_PKG_BREAKS="chroot, busybox (<< 1.30.1-4)"
 TERMUX_PKG_REPLACES="chroot, busybox (<< 1.30.1-4)"
@@ -16,7 +16,6 @@ TERMUX_PKG_ON_DEVICE_BUILD_NOT_SUPPORTED=true
 
 # pinky has no usage on Android.
 # df does not work either, let system binary prevail.
-# $PREFIX/bin/env is provided by busybox for shebangs to work directly.
 # users and who doesn't work and does not make much sense for Termux.
 # uptime is provided by procps.
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
@@ -24,7 +23,8 @@ gl_cv_host_operating_system=Android
 ac_cv_func_getpass=yes
 --disable-xattr
 --with-packager=Termux
---enable-no-install-program=pinky,df,users,who,uptime
+--enable-no-install-program=pinky,df,users,who
+--enable-install-program=kill
 --enable-single-binary=symlinks
 --with-gmp
 "
