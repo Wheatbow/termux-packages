@@ -5,7 +5,7 @@ TERMUX_PKG_MAINTAINER="@termux"
 __VERSION="537-545fac4"
 TERMUX_PKG_VERSION=0.0.0-${__VERSION}
 TERMUX_PKG_GIT_BRANCH="master"
-TERMUX_PKG_SRCURL=git+https://github.com/leejet/stable-diffusion.cpp
+TERMUX_PKG_SRCURL=git+https://github.com/wheatbow/stable-diffusion.cpp
 TERMUX_PKG_SHA256="SKIP_CHECKSUM"
 TERMUX_PKG_BUILD_DEPENDS="opencl-headers"
 TERMUX_PKG_CONFLICTS="sdcpp, sdcpp-vulkan"
@@ -16,7 +16,6 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 "
 
 termux_step_make_install() {
-  local _pkgdir
   _pkgdir="$TERMUX_PKG_MASSAGEDIR/$TERMUX_PREFIX"
   mkdir -p "$_pkgdir/bin"
   cp "$TERMUX_PKG_BUILDDIR/bin/sd-cli" "$_pkgdir/bin/"
